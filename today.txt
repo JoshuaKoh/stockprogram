@@ -1,0 +1,73 @@
+Stock Activities For Today
+Test done on 2017-05-03 02:22:42
+
+ACAS is on the watchlist today.
+Sell AGU
+ALK is on the watchlist today.
+Sell ALSN
+BC is on the watchlist today.
+Sell BG
+
+Buy BRX
+SMA20: 20.7735001		| SMA50: 21.09539992		| SMA200: 22.72519993
+
+CAA is on the watchlist today.
+CCJ is on the watchlist today.
+
+Buy CLD
+SMA20: 3.7495		| SMA50: 4.2182		| SMA200: 4.93495
+
+CLNY is on the watchlist today.
+
+Buy CNI
+SMA20: 73.57250015		| SMA50: 73.68619952		| SMA200: 71.3422497
+
+CUBE is on the watchlist today.
+
+Buy CVC
+SMA20: 34.869999		| SMA50: 34.869999		| SMA200: 34.869999
+
+DFS is on the watchlist today.
+Sell DISH
+DPS is on the watchlist today.
+EIX is on the watchlist today.
+EXR is on the watchlist today.
+FTI is on the watchlist today.
+GFI is on the watchlist today.
+Sell GM
+IPG is on the watchlist today.
+Sell JNJ
+KIM is on the watchlist today.
+KN is on the watchlist today.
+KS is on the watchlist today.
+NNN is on the watchlist today.
+NSAM is on the watchlist today.
+OC is on the watchlist today.
+PCG is on the watchlist today.
+PEG is on the watchlist today.
+Sell PFG
+PG is on the watchlist today.
+PGRE is on the watchlist today.
+Sell POT
+PVTB is on the watchlist today.
+QSR is on the watchlist today.
+RDN is on the watchlist today.
+RLJ is on the watchlist today.
+RSG is on the watchlist today.
+SERV is on the watchlist today.
+
+Buy SLG
+SMA20: 106.62349925		| SMA50: 107.12220008		| SMA200: 108.475599925
+
+SRC is on the watchlist today.
+STX is on the watchlist today.
+SYF is on the watchlist today.
+TD is on the watchlist today.
+TDC is on the watchlist today.
+Sell TEL
+TRXC is on the watchlist today.
+Sell TSO
+TXN is on the watchlist today.
+USG is on the watchlist today.
+VNTV is on the watchlist today.
+Sell WNR

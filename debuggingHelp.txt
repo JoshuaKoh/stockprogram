@@ -1,0 +1,12 @@
+Q. The program is crashing! What's wrong?
+A. - Check that a bad string for "deviationOf" is not being given to calcStandardDeviation. If the "deviationOf" string does not exist as a key in the stocks dictionary, the program will break.
+
+Q. All EMAs for a certain date are "None"!
+A. This is likely because EMA calculation is being attempted on a stock over an interval from which that stock's SMA has not yet been calculated. Since the first EMA value relies on a corresponding SMA value, having no SMA value calculated over the specified time interval results in no EMAs being calculated.
+
+Q. The database is filled with random characters and junk data.
+A. - Check that a bad ticker was not listed in stocks.txt. The only test for bad tickers is a check for the Yahoo 404 page, and this is not always reliable. Make sure there are no poorly formatted tickers, and only one ticker per line.
+
+Q. Testing a strategy reports 0 wins and 0 losses. Why?
+A. - Check that your strategy has no typos which are messing up the reading and parsing of the strategy.
+- Check that the value you are trying to work with is being calculated for the stock. For instance, if working with "macdAVG12", be sure macdAVG12 is actually a data point in the stock document.

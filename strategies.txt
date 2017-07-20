@@ -1,0 +1,7 @@
+# Lines which begin with hashes are ignored.
+# Format: Conditions are comma delimited, white space is ignored, use only >, <, =>, <=, and = to compare. Concatenate a number x to the comparator to request that the condition is met over x consecutive days (putting a 1 and putting nothing accomplish the same thing)
+# / indicates a switch from negative to positive or vice versa. Specified by following + (value today is greater than yesterday) or - (value today is less than yesterday)
+# WATCH, BUY & BUY & BUY, SELL & SELL, SELL_STOP & SELL_STOP, NUMBER OF DAYS BEFORE STOCK ON WATCH LIST EXPIRES (-1 to have no expiration)
+
+
+stdevofmacd200 < -1, macd / +, stdevofmacd200 > -0.5 & macd / -, stdevofmacd200 > -0.5 & macd / -, -1
