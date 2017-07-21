@@ -1,6 +1,7 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from dataManage import insertStocks, getSingleMostRecentByTicker
+from jnius import autoclass
 import urllib
 import csv
 import io
@@ -41,8 +42,25 @@ def _makeUrl(ticker, yearsAgo, monthsAgo, daysAgo):
     yearStart = str(start.year)
     yearEnd = str(end.year)
 
- #   url = "http://real-chart.finance.yahoo.com/table.csv?s=" + ticker + "&a=" + monthStart + "&b=" + dayStart + "&c=" + yearStart + "&d=" + monthEnd + "&e=" + dayEnd + "&f=" + yearEnd + "&g=d&ignore=.csv"
-    url = "https://www.google.com/finance/historical?output=csv&q=" + ticker
+    # url = "http://real-chart.finance.yahoo.com/table.csv?s=" + ticker + "&a=" + monthStart + "&b=" + dayStart + "&c=" + yearStart + "&d=" + monthEnd + "&e=" + dayEnd + "&f=" + yearEnd + "&g=d&ignore=.csv"
+    DateFormat = autoclass('java.text.DateFormat')
+    SimpleDateFormat = autoclass('java.text.SimpleDateFormat')
+    String = autoclass('java.lang.String')
+    Date = autoclass('java.util.Date')
+
+    dateStart = "%s-%s-%s" % (yearStart, monthStart, dayStart)
+    dateEnd = "%s-%s-%s" % (yearEnd, monthEnd, dayEnd)
+    sdf = SimpleDateFormat('yyyy-MM-dd')
+
+    dateStartObj = sdf.parse(dateStart)
+    msStart = dateStartObj.getTime()
+    startCode = msStart/1000
+
+    dateEndObj = sdf.parse(dateEnd)
+    msEnd = dateEndObj.getTime()
+    endCode = msEnd/1000
+
+    url = "https://query1.finance.yahoo.com/v8/finance/chart/%s?formatted=true&lang=en-US&region=US&period1=%s&period2=%s&interval=1d&events=div%%7Csplit&corsDomain=finance.yahoo.com" % (ticker, startCode, endCode)
     return url
 
 
@@ -128,3 +146,5 @@ def setMostRecentUpdateDate():
     f = open('config.txt', 'w')
     f.write(datetime.now().strftime(abbrvDateFormat))
     f.close()
+
+print(_makeUrl("AAPL", 3, 0, 0))
