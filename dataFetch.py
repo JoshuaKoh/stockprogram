@@ -70,6 +70,10 @@ def _makeUrl(ticker, yearsAgo, monthsAgo, daysAgo):
 def _getDataFromUrl(url):
     response = urllib.urlopen(url).read()
     jsonDict = json.loads(response)
+    if jsonDict["chart"]["error"] is None:
+        print "updateStocks: Received bad ticker %s. Skipping!" % line
+    else:
+        print "updateStocks: Fetching data for %s." % line
     raw = jsonDict["chart"]["result"][0]["indicators"]["quote"][0]
     dates = jsonDict["chart"]["result"][0]["timestamp"]
 
@@ -120,23 +124,16 @@ def updateStocks(db):
             elif dtNow.weekday() == SUNDAY:
                 dtNow -= timedelta(days=2)
             nowDate = dtNow.strftime(dateFormat)[:10]
-            print nowDate
-            print abbrvDateFormat
-            print mostRecent[0]["date"]
-            datesMissing = relativedelta(datetime.strptime(nowDate, abbrvDateFormat), datetime.strptime(mostRecent[0]["date"], abbrvDateFormat))
-            # Test if last update was yesterday. If so, there is no need to update again
-            if datesMissing.years == 0 and datesMissing.months == 0 and datesMissing.days <= 1:
-                print "updateStocks: %s is already fully updated with base data." % line
-                continue
+            # datesMissing = relativedelta(datetime.strptime(nowDate, abbrvDateFormat), datetime.strptime(mostRecent[0]["date"], abbrvDateFormat))
+            # # Test if last update was yesterday. If so, there is no need to update again
+            # if datesMissing.years == 0 and datesMissing.months == 0 and datesMissing.days <= 1:
+            #     print "updateStocks: %s is already fully updated with base data." % line
+            #     continue
 
-            u = _makeUrl(line, datesMissing.years, datesMissing.months, datesMissing.days)
+            # u = _makeUrl(line, datesMissing.years, datesMissing.months, datesMissing.days)
+            u = _makeUrl(line, 3, 0, 0)
 
         dFromU = _getDataFromUrl(u)
-        if dFromU[0][0].startswith("<"):
-            print "updateStocks: Received bad ticker %s. Skipping!" % line
-            continue
-        else:
-            print "updateStocks: New data for %s." % line
         for d in dFromU:
             if d[0] != "Date":
                 # Handle relevant stock info here
@@ -169,3 +166,4 @@ def setMostRecentUpdateDate():
     f = open('config.txt', 'w')
     f.write(datetime.now().strftime(abbrvDateFormat))
     f.close()
+
