@@ -5,12 +5,18 @@ from jnius import autoclass
 import urllib
 import csv
 import io
+import json
 from pprint import pprint
 
 dateFormat = "%Y-%m-%d %H:%M:%S"
 abbrvDateFormat = "%Y-%m-%d"
 SATURDAY = 5
 SUNDAY = 6
+
+DateFormat = autoclass('java.text.DateFormat')
+SimpleDateFormat = autoclass('java.text.SimpleDateFormat')
+String = autoclass('java.lang.String')
+Date = autoclass('java.util.Date')
 
 # Given a valid stock ticker string, and digits for years, months, and days ago, returns a URL for the Yahoo stock data from the range of years, months, and days ago until the most recent data (most recent market day).
 def _makeUrl(ticker, yearsAgo, monthsAgo, daysAgo):
@@ -43,10 +49,6 @@ def _makeUrl(ticker, yearsAgo, monthsAgo, daysAgo):
     yearEnd = str(end.year)
 
     # url = "http://real-chart.finance.yahoo.com/table.csv?s=" + ticker + "&a=" + monthStart + "&b=" + dayStart + "&c=" + yearStart + "&d=" + monthEnd + "&e=" + dayEnd + "&f=" + yearEnd + "&g=d&ignore=.csv"
-    DateFormat = autoclass('java.text.DateFormat')
-    SimpleDateFormat = autoclass('java.text.SimpleDateFormat')
-    String = autoclass('java.lang.String')
-    Date = autoclass('java.util.Date')
 
     dateStart = "%s-%s-%s" % (yearStart, monthStart, dayStart)
     dateEnd = "%s-%s-%s" % (yearEnd, monthEnd, dayEnd)
@@ -66,10 +68,28 @@ def _makeUrl(ticker, yearsAgo, monthsAgo, daysAgo):
 
 # Returns an array of comma separated rows of the stock data off the url
 def _getDataFromUrl(url):
-    response = urllib.urlopen(url)
-    dataReader = csv.reader(response)
+    response = urllib.urlopen(url).read()
+    jsonDict = json.loads(response)
+    raw = jsonDict["chart"]["result"][0]["indicators"]["quote"][0]
+    dates = jsonDict["chart"]["result"][0]["timestamp"]
+
     data = []
-    for row in dataReader:
+    total = len(dates)
+    for i in range(0, total):
+        row = []
+        date = SimpleDateFormat("yyyy-MM-dd").format(Date(dates[i]*1000))
+        openData = raw["open"][i]
+        closeData = raw["close"][i]
+        highData = raw["high"][i]
+        lowData = raw["low"][i]
+        volumeData = raw["volume"][i]
+
+        row.append(date)
+        row.append(openData)
+        row.append(highData)
+        row.append(lowData)
+        row.append(closeData)
+        row.append(volumeData)
         data.append(row)
     return data
 
@@ -100,6 +120,9 @@ def updateStocks(db):
             elif dtNow.weekday() == SUNDAY:
                 dtNow -= timedelta(days=2)
             nowDate = dtNow.strftime(dateFormat)[:10]
+            print nowDate
+            print abbrvDateFormat
+            print mostRecent[0]["date"]
             datesMissing = relativedelta(datetime.strptime(nowDate, abbrvDateFormat), datetime.strptime(mostRecent[0]["date"], abbrvDateFormat))
             # Test if last update was yesterday. If so, there is no need to update again
             if datesMissing.years == 0 and datesMissing.months == 0 and datesMissing.days <= 1:
@@ -146,5 +169,3 @@ def setMostRecentUpdateDate():
     f = open('config.txt', 'w')
     f.write(datetime.now().strftime(abbrvDateFormat))
     f.close()
-
-print(_makeUrl("AAPL", 3, 0, 0))

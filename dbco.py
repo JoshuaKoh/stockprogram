@@ -5,8 +5,9 @@ import pprint as pp
 client = MongoClient()
 
 db = client.stocks
-db.stocks.create_index([("abbreviation", ASCENDING)])
-db.stocks.create_index([("date", DESCENDING)])
+db.stocks.delete_many({})
+# db.stocks.create_index([("abbreviation", ASCENDING)])
+# db.stocks.create_index([("date", DESCENDING)])
 
 # db.add_son_manipulator(Transform())
 
